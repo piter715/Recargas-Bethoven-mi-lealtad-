@@ -4,138 +4,97 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0F0F14">
-<title>Bethoven - Sellos $100</title>
+<title>Bethoven - Solo Negocio $100</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
 <style>
-*{ -webkit-tap-highlight-color: transparent; }
-body{font-family:'Plus Jakarta Sans',sans-serif; overscroll-behavior-y:none; }
+*{ -webkit-tap-highlight-color:transparent }
+body{font-family:'Plus Jakarta Sans',sans-serif}
 .font-display{font-family:'Space Grotesk',sans-serif}
-.filled{background:radial-gradient(at 30% 20%,#FFD93D,#FF5A1F); box-shadow:0 0 0 2px #1A1A22}
+.filled{background:radial-gradient(at 30% 20%,#FFD93D,#FF5A1F)}
 .empty{border:2px dashed #2E2E3D}
 button:active{transform:scale(.97)}
-input{font-size:16px !important} /* evita zoom en iPhone */
+input{font-size:16px !important}
 </style>
 </head>
-<body class="bg-[#0F0F14] text-white min-h-screen min-h-[100dvh] flex flex-col">
-<header class="sticky top-0 z-20 bg-[#0F0F14]/90 backdrop-blur-xl p-3 md:p-4 flex justify-between items-center border-b border-white/10">
+<body class="bg-[#0F0F14] text-white min-h-[100dvh] flex flex-col">
+<header class="sticky top-0 z-20 bg-[#0F0F14]/90 backdrop-blur-xl p-3 flex justify-between items-center border-b border-white/10">
 <div class="flex gap-2.5 items-center">
-<div class="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-gradient-to-br from-orange-500 to-yellow-300 grid place-items-center text-black font-bold text-[16px]">♫</div>
+<div class="w-9 h-9 rounded-xl bg-gradient-to-br from-orange-500 to-yellow-300 grid place-items-center text-black font-bold">♫</div>
 <div class="leading-none">
-<h1 class="font-display font-bold text-[15px] md:text-[17px]">BETHOVEN</h1>
-<p class="text-[10px] md:text-[11px] text-orange-400 font-bold tracking-widest">RECARGA $100 GRATIS</p>
+<h1 class="font-display font-bold text-[15px]">BETHOVEN</h1>
+<p class="text-[10px] text-orange-400 font-bold tracking-widest">PANEL NEGOCIO - $100</p>
 </div>
 </div>
-<button onclick="requestAdmin()" class="px-4 py-2.5 rounded-full bg-white/10 text-[12px] font-bold active:bg-white/20">🔒 Negocio</button>
+<button id="btnSalir" onclick="logout()" class="hidden px-4 py-2.5 rounded-full bg-white/10 text-[12px]">Salir</button>
 </header>
 
-<!-- Login Modal -->
-<div id="login" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md grid place-items-center p-4">
+<!-- Login -->
+<div id="login" class="fixed inset-0 z-50 bg-[#0F0F14] grid place-items-center p-4">
 <div class="bg-[#1A1A22] rounded-[24px] p-6 w-full max-w-[320px] border border-white/10 text-center">
-<p class="font-display font-bold mb-3">PIN Negocio</p>
-<input id="passInput" type="password" inputmode="numeric" placeholder="PIN" class="w-full p-4 rounded-2xl bg-black/50 border border-white/10 text-center text-lg tracking-widest outline-none">
-<button onclick="checkPass()" class="w-full mt-3 py-4 rounded-2xl bg-white text-black font-bold text-[15px]">Entrar</button>
-<button onclick="document.getElementById('login').classList.add('hidden')" class="w-full mt-3 text-white/40 text-xs py-2">Cerrar</button>
+<div class="w-12 h-12 mx-auto rounded-2xl bg-gradient-to-br from-orange-500 to-yellow-300 grid place-items-center text-black font-bold text-xl mb-3">♫</div>
+<p class="font-display font-bold text-lg">Recargas Bethoven</p>
+<p class="text-[12px] opacity-50 mb-4">Ingresa PIN para gestionar sellos</p>
+<input id="passInput" type="password" placeholder="PIN" class="w-full p-4 rounded-2xl bg-black/50 border border-white/10 text-center text-lg tracking-widest outline-none">
+<button onclick="checkPass()" class="w-full mt-3 py-4 rounded-2xl bg-white text-black font-bold">Entrar</button>
+<p class="text-[10px] opacity-30 mt-3">PIN por defecto: bethoven123</p>
 </div></div>
 
-<main class="flex-1 w-full max-w-6xl mx-auto p-3 md:p-5">
-
-<!-- VISTA NEGOCIO -->
-<div id="viewB" class="hidden">
+<main id="main" class="hidden flex-1 w-full max-w-6xl mx-auto p-3">
 <div class="flex flex-col sm:flex-row gap-2 mb-4">
-<div class="flex-1 relative">
-<input id="q" oninput="render()" placeholder="Buscar cliente..." class="w-full px-5 py-3.5 rounded-full bg-[#1A1A22] border border-white/10 outline-none text-[14px]">
-</div>
-<div class="flex gap-2">
-<button onclick="document.getElementById('add').classList.toggle('hidden')" class="flex-1 sm:flex-none px-6 py-3.5 rounded-full bg-white text-black font-bold text-[14px]">+ Cliente</button>
-<button onclick="logout()" class="px-5 py-3.5 rounded-full bg-white/5 text-[12px]">Salir</button>
-</div>
+<input id="q" oninput="render()" placeholder="Buscar cliente por nombre o WhatsApp..." class="flex-1 px-5 py-3.5 rounded-full bg-[#1A1A22] border border-white/10 outline-none text-[14px]">
+<button onclick="document.getElementById('add').classList.toggle('hidden')" class="px-6 py-3.5 rounded-full bg-white text-black font-bold text-[14px]">+ Cliente</button>
 </div>
 
 <div id="add" class="hidden bg-[#1A1A22] p-3 rounded-[20px] border border-white/10 mb-4">
 <div class="flex flex-col sm:flex-row gap-2">
-<input id="nName" placeholder="Nombre" class="flex-1 p-3.5 rounded-xl bg-black/40 border border-white/10 outline-none">
+<input id="nName" placeholder="Nombre del cliente" class="flex-1 p-3.5 rounded-xl bg-black/40 border border-white/10 outline-none">
 <input id="nPhone" type="tel" inputmode="numeric" placeholder="WhatsApp 10 dígitos" class="flex-1 p-3.5 rounded-xl bg-black/40 border border-white/10 outline-none">
-<button onclick="add()" class="px-8 py-3.5 rounded-xl bg-orange-500 text-black font-bold text-[14px]">Agregar</button>
+<button onclick="add()" class="px-8 py-3.5 rounded-xl bg-orange-500 text-black font-bold">Agregar</button>
 </div>
 </div>
 
-<div id="grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4"></div>
-</div>
+<div id="grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"></div>
 
-<!-- VISTA CLIENTE -->
-<div id="viewC" class="w-full max-w-[420px] mx-auto mt-6 md:mt-12 px-1">
-<div class="bg-[#1A1A22] rounded-[28px] p-5 md:p-7 border border-white/10 shadow-2xl">
-<div class="flex items-center gap-2 mb-1">
-<span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-<p class="text-[10px] tracking-widest opacity-40">SISTEMA OFICIAL</p>
+<div class="mt-8 p-4 rounded-2xl bg-white/5 border border-white/5 text-[11px] opacity-40 text-center">
+Cada sello abre WhatsApp automático al cliente con su avance: X/10 para su recarga de $100 gratis.
 </div>
-<h2 class="font-display text-[22px] md:text-[26px] font-bold leading-tight">Consulta tus sellos</h2>
-<p class="text-[13px] opacity-50 mt-1">10 recargas = <span class="text-yellow-300 font-bold">$100 gratis</span></p>
-
-<div class="flex gap-2 mt-5">
-<input id="lookup" type="tel" inputmode="numeric" placeholder="Tu WhatsApp" class="flex-1 px-5 py-4 rounded-full bg-black/50 border border-white/10 outline-none text-[15px]">
-<button onclick="lookup()" class="px-7 py-4 rounded-full bg-white text-black font-bold text-[14px] active:scale-95">Ver</button>
-</div>
-
-<div id="res" class="mt-6 hidden"></div>
-
-<p class="text-[10px] opacity-20 text-center mt-6">Recargas Bethoven • Premio $100</p>
-</div>
-
-<!-- Info extra para confianza -->
-<div class="mt-4 bg-white/5 border border-white/5 rounded-2xl p-4 flex gap-3">
-<div class="w-8 h-8 rounded-full bg-yellow-300/20 grid place-items-center text-sm">🎁</div>
-<div>
-<p class="text-[12px] font-bold">¿Cómo funciona?</p>
-<p class="text-[11px] opacity-50 leading-snug">1 recarga = 1 sello. Al juntar 10, te regalamos $100 de recarga. Consulta aquí tus sellos.</p>
-</div>
-</div>
-</div>
-
 </main>
 
 <div id="toast" class="fixed bottom-[calc(16px+env(safe-area-inset-bottom))] left-1/2 -translate-x-1/2 bg-white text-black px-5 py-3 rounded-full font-bold text-[13px] hidden z-50 shadow-xl max-w-[90vw] text-center"></div>
 
 <script>
 const KEY='bethoven_v3';
-// Forzar premio $100
-let stored = JSON.parse(localStorage.getItem(KEY)||'null');
+let stored=JSON.parse(localStorage.getItem(KEY)||'null');
 let S;
 if(stored){
   S=stored;
-  // Migrar a $100 si estaba en $50
   S.config.rewardAmount='$100';
   S.config.rewardText='Recarga Gratis';
-  S.config.businessName='Recargas Bethoven';
   S.config.stampsNeeded=10;
 } else {
   S={config:{businessName:'Recargas Bethoven',stampsNeeded:10,rewardAmount:'$100',rewardText:'Recarga Gratis',pin:'bethoven123'},clients:[]};
 }
-let isAdmin=sessionStorage.getItem('bethoven_admin')==='1';
 const save=()=>localStorage.setItem(KEY,JSON.stringify(S));
 
-function requestAdmin(){
-  if(isAdmin){ document.getElementById('viewB').classList.remove('hidden'); document.getElementById('viewC').classList.add('hidden'); render(); return; }
-  document.getElementById('login').classList.remove('hidden');
-  setTimeout(()=>document.getElementById('passInput').focus(),100);
-}
 function checkPass(){
   if(document.getElementById('passInput').value===S.config.pin){
-    isAdmin=true; sessionStorage.setItem('bethoven_admin','1');
+    sessionStorage.setItem('bethoven_admin','1');
     document.getElementById('login').classList.add('hidden');
-    document.getElementById('passInput').value='';
-    document.getElementById('viewB').classList.remove('hidden');
-    document.getElementById('viewC').classList.add('hidden');
-    render(); toast('Modo negocio');
+    document.getElementById('main').classList.remove('hidden');
+    document.getElementById('btnSalir').classList.remove('hidden');
+    render();
   } else toast('PIN incorrecto');
 }
 function logout(){
-  isAdmin=false; sessionStorage.removeItem('bethoven_admin');
-  document.getElementById('viewB').classList.add('hidden');
-  document.getElementById('viewC').classList.remove('hidden');
+  sessionStorage.removeItem('bethoven_admin');
+  document.getElementById('login').classList.remove('hidden');
+  document.getElementById('main').classList.add('hidden');
+  document.getElementById('btnSalir').classList.add('hidden');
+  document.getElementById('passInput').value='';
 }
 
+// WhatsApp
 function getWaLink(phone, text){
   let p=(phone+'').replace(/\D/g,'');
   if(p.length===10) p='52'+p;
@@ -145,9 +104,9 @@ function getWaLink(phone, text){
 function buildMsg(c){
   const need=S.config.stampsNeeded;
   if(c.stamps>=need){
-    return `Hola ${c.name}! 🎵✨\n\n¡FELICIDADES! Completaste ${c.stamps}/${need} sellos en ${S.config.businessName}.\n\n🎁 Premio: ${S.config.rewardAmount} de ${S.config.rewardText}\nPasa a mostrador para canjear tu recarga de $100.\n\n¡Gracias! ♫`;
+    return `Hola ${c.name}! 🎵✨\n\n¡FELICIDADES! Completaste ${c.stamps}/${need} sellos en Bethoven.\n\n🎁 Premio: ${S.config.rewardAmount} de recarga GRATIS\nPasa a mostrador para canjear.\n\n¡Gracias! ♫`;
   } else {
-    return `Hola ${c.name}! 🎵\n\nSello registrado en ${S.config.businessName}.\n\nLlevas: ${c.stamps}/${need} sellos\nTe faltan: ${need-c.stamps} para tu recarga de $100 GRATIS\n\n¡Te esperamos! ♫`;
+    return `Hola ${c.name}! 🎵\n\nSello registrado en Bethoven.\nLlevas: ${c.stamps}/${need} sellos\nTe faltan: ${need-c.stamps} para tu recarga de $100 GRATIS\n\n¡Te esperamos! ♫`;
   }
 }
 function add(){
@@ -173,7 +132,7 @@ function redeem(id){
   if(!confirm(`¿Canjear $100 para ${c.name}?`)) return;
   c.stamps-=S.config.stampsNeeded; c.redeemed++; save(); render();
   const code='BETH100-'+Math.random().toString(36).slice(2,6).toUpperCase();
-  window.open(getWaLink(c.phone, `Hola ${c.name}! 🎁 Canjeaste tu RECARGA DE $100 GRATIS en Bethoven. Código: ${code}. Muestra este mensaje en mostrador.`), '_blank');
+  window.open(getWaLink(c.phone, `Hola ${c.name}! 🎁 Canjeaste tu RECARGA DE $100 GRATIS en Bethoven. Código: ${code}. Muéstralo en mostrador.`), '_blank');
 }
 function sendWA(id){
   const c=S.clients.find(x=>x.id==id); if(!c) return;
@@ -185,43 +144,28 @@ function render(){
   document.getElementById('grid').innerHTML=list.map(c=>{
     const need=S.config.stampsNeeded; const can=c.stamps>=need;
     const pct=Math.round(c.stamps/need*100);
-    const stamps=Array.from({length:need}).map((_,i)=>`<div class="w-[30px] h-[30px] sm:w-8 sm:h-8 rounded-full grid place-items-center text-[11px] font-bold ${i<c.stamps?'filled text-black':'empty text-white/30'}">${i<c.stamps?'♪':''}</div>`).join('');
-    return `<div class="bg-[#1A1A22] border border-white/10 rounded-[20px] p-4 flex flex-col">
-      <div class="flex justify-between items-start">
-        <div class="min-w-0 flex-1"><p class="font-bold truncate text-[15px]">${c.name}</p><p class="text-[11px] opacity-50 mt-0.5">${c.phone} • ${c.stamps}/${need} • ${pct}%</p></div>
-        <button onclick="if(confirm('¿Eliminar?')){S.clients=S.clients.filter(x=>x.id!='${c.id}');save();render()}" class="ml-2 w-8 h-8 rounded-full bg-white/5 grid place-items-center text-white/30">✕</button>
-      </div>
-      <div class="flex flex-wrap gap-2 mt-3.5">${stamps}</div>
+    const stamps=Array.from({length:need}).map((_,i)=>`<div class="w-[30px] h-[30px] rounded-full grid place-items-center text-[11px] font-bold ${i<c.stamps?'filled text-black':'empty text-white/30'}">${i<c.stamps?'♪':''}</div>`).join('');
+    return `<div class="bg-[#1A1A22] border border-white/10 rounded-[20px] p-4">
+      <div class="flex justify-between"><div class="min-w-0 flex-1"><p class="font-bold truncate">${c.name}</p><p class="text-[11px] opacity-50">${c.phone} • ${c.stamps}/${need} • ${pct}%</p></div>
+      <button onclick="if(confirm('¿Eliminar?')){S.clients=S.clients.filter(x=>x.id!='${c.id}');save();render()}" class="w-8 h-8 rounded-full bg-white/5 grid place-items-center text-white/30">✕</button></div>
+      <div class="flex flex-wrap gap-2 mt-3">${stamps}</div>
       <div class="mt-3 h-1.5 bg-white/10 rounded-full overflow-hidden"><div class="h-full bg-gradient-to-r from-orange-500 to-yellow-300" style="width:${pct}%"></div></div>
       <div class="flex gap-2 mt-4">
-        <button onclick="addS('${c.id}')" class="flex-1 py-3.5 rounded-full bg-white text-black font-bold text-[13px] active:bg-white/90">+1 Sello</button>
-        <button onclick="redeem('${c.id}')" class="px-5 py-3.5 rounded-full ${can?'bg-yellow-300 text-black':'bg-white/10 text-white/30'} text-[13px] font-bold">Canjear $100</button>
+        <button onclick="addS('${c.id}')" class="flex-1 py-3.5 rounded-full bg-white text-black font-bold text-[13px]">+1 Sello</button>
+        <button onclick="redeem('${c.id}')" class="px-5 py-3.5 rounded-full ${can?'bg-yellow-300 text-black':'bg-white/10 text-white/30'} text-[13px] font-bold">Canjear</button>
       </div>
       <button onclick="sendWA('${c.id}')" class="w-full mt-2 py-3 rounded-full bg-[#25D366] text-black font-bold text-[12px]">💬 WhatsApp: ${c.stamps}/${need}</button>
     </div>`;
   }).join('');
-  if(list.length===0){
-    document.getElementById('grid').innerHTML='<p class="col-span-full text-center opacity-30 py-12 text-sm">Sin clientes. Agrega uno.</p>';
-  }
-}
-function lookup(){
-  const p=document.getElementById('lookup').value.replace(/\D/g,'');
-  if(!p) return toast('Escribe tu WhatsApp');
-  const c=S.clients.find(x=>x.phone==p||x.phone.endsWith(p)||p.endsWith(x.phone));
-  const r=document.getElementById('res'); r.classList.remove('hidden');
-  if(!c){ r.innerHTML='<p class="text-center opacity-40 py-6 text-sm">No encontrado. Pide que te registren en Bethoven.</p>'; return; }
-  const need=S.config.stampsNeeded; const pct=Math.round(c.stamps/need*100);
-  const stamps=Array.from({length:need}).map((_,i)=>`<div class="w-10 h-10 md:w-11 md:h-11 rounded-full grid place-items-center text-sm font-bold ${i<c.stamps?'filled text-black':'empty text-white/30'}">${i<c.stamps?'♪':''}</div>`).join('');
-  r.innerHTML=`<div class="border-t border-white/10 pt-5 mt-5">
-    <div class="flex justify-between items-center"><p class="font-bold text-[16px]">${c.name}</p><p class="text-[11px] px-2.5 py-1 rounded-full bg-white/10">${pct}%</p></div>
-    <p class="text-[12px] opacity-50 mt-1">${c.phone} • ${c.stamps}/${need} sellos</p>
-    <div class="flex flex-wrap gap-2 justify-center bg-black/40 p-4 rounded-[20px] mt-4">${stamps}</div>
-    <div class="mt-3 h-2 bg-white/10 rounded-full overflow-hidden"><div class="h-full bg-gradient-to-r from-orange-500 to-yellow-300" style="width:${pct}%"></div></div>
-    <p class="text-center mt-4 text-[13px] ${c.stamps>=need?'text-yellow-300 font-bold':'opacity-60'}">${c.stamps>=need?'¡FELICIDADES! Ya tienes tu recarga de $100 lista 🎁':'Te faltan '+(need-c.stamps)+' sellos para tu recarga de $100'}</p>
-  </div>`;
+  if(list.length===0) document.getElementById('grid').innerHTML='<p class="col-span-full text-center opacity-30 py-16 text-sm">Sin clientes.<br>Agrega uno para empezar.</p>';
 }
 function toast(m){ const t=document.getElementById('toast'); t.innerText=m; t.classList.remove('hidden'); setTimeout(()=>t.classList.add('hidden'),2500); }
-if(isAdmin){ document.getElementById('viewB').classList.remove('hidden'); document.getElementById('viewC').classList.add('hidden'); render(); }
+if(sessionStorage.getItem('bethoven_admin')==='1'){
+  document.getElementById('login').classList.add('hidden');
+  document.getElementById('main').classList.remove('hidden');
+  document.getElementById('btnSalir').classList.remove('hidden');
+  render();
+}
 </script>
 </body>
 </html>
